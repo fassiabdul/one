@@ -14,18 +14,19 @@
     String imageUrl = request.getParameter("imageUrl");
 
     if ("POST".equalsIgnoreCase(request.getMethod())) {
+
         if (name != null && description != null && imageUrl != null &&
             !name.trim().isEmpty() &&
             !description.trim().isEmpty() &&
             !imageUrl.trim().isEmpty()) {
 
-            Map<String, String> newProduct = new HashMap<>();
+            Map<String, String> product = new HashMap<>();
 
-            newProduct.put("name", name.trim());
-            newProduct.put("description", description.trim());
-            newProduct.put("imageUrl", imageUrl.trim());
+            product.put("name", name.trim());
+            product.put("description", description.trim());
+            product.put("imageUrl", imageUrl.trim());
 
-            products.add(newProduct);
+            products.add(product);
 
             response.sendRedirect("showcase.jsp");
             return;
@@ -37,636 +38,1404 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MedCare | Medical Products</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MedixCare | Product Dashboard</title>
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    background: #f7f9fc;
+    color: #172033;
+}
+
+/* =====================================================
+   LAYOUT
+===================================================== */
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar {
+    width: 245px;
+    background: #101828;
+    color: white;
+    padding: 25px 18px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 10px 35px;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #06b6d4
+    );
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.brand-name {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.brand-subtitle {
+    font-size: 10px;
+    color: #98a2b3;
+    margin-top: 2px;
+}
+
+.menu-title {
+    color: #667085;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 12px;
+    margin-bottom: 10px;
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu li {
+    margin-bottom: 5px;
+}
 
-    <style>
+.menu a {
+    display: flex;
+    align-items: center;
+    gap: 13px;
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    text-decoration: none;
 
-        body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: #f5f9fc;
-            color: #1f2937;
-        }
+    color: #98a2b3;
 
-        /* ================= HEADER ================= */
+    padding: 12px 13px;
 
-        header {
-            background: linear-gradient(
-                135deg,
-                #0f766e,
-                #0891b2
-            );
+    border-radius: 9px;
 
-            color: white;
-            padding: 22px 7%;
+    font-size: 14px;
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+    transition: 0.25s;
+}
 
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-        }
+.menu a:hover,
+.menu a.active {
+    color: white;
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+    background: linear-gradient(
+        90deg,
+        #1d4ed8,
+        #2563eb
+    );
+}
 
-        .logo-icon {
-            width: 45px;
-            height: 45px;
+.menu-icon {
+    width: 20px;
+    text-align: center;
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+/* =====================================================
+   SIDEBAR BOTTOM
+===================================================== */
 
-            background: white;
-            color: #0891b2;
+.sidebar-bottom {
+    position: absolute;
+    bottom: 25px;
+    left: 18px;
+    right: 18px;
 
-            border-radius: 12px;
+    background: #172033;
 
-            font-size: 25px;
-            font-weight: bold;
-        }
+    padding: 15px;
 
-        .logo h1 {
-            font-size: 24px;
-            letter-spacing: 0.5px;
-        }
+    border-radius: 12px;
+}
 
-        .logo p {
-            font-size: 12px;
-            opacity: 0.85;
-        }
+.sidebar-bottom p {
+    color: #98a2b3;
+    font-size: 11px;
+    line-height: 1.5;
+}
 
-        .header-btn {
-            background: white;
-            color: #0f766e;
+.sidebar-bottom strong {
+    color: white;
+}
 
-            border: none;
-            padding: 11px 20px;
+/* =====================================================
+   MAIN
+===================================================== */
 
-            border-radius: 25px;
+.main {
+    margin-left: 245px;
+    width: calc(100% - 245px);
+}
 
-            font-weight: 600;
-            cursor: pointer;
+/* =====================================================
+   TOPBAR
+===================================================== */
 
-            transition: 0.3s;
-        }
+.topbar {
+    height: 75px;
 
-        .header-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-        }
+    background: white;
 
-        /* ================= HERO ================= */
+    border-bottom: 1px solid #eaecf0;
 
-        .hero {
-            max-width: 1200px;
-            margin: 45px auto 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-            padding: 35px;
+    padding: 0 35px;
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+.page-title h1 {
+    font-size: 20px;
+    color: #101828;
+}
 
-            background: linear-gradient(
-                135deg,
-                #ecfeff,
-                #f0fdfa
-            );
+.page-title p {
+    font-size: 12px;
+    color: #98a2b3;
+    margin-top: 3px;
+}
 
-            border-radius: 20px;
-        }
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-        .hero-text {
-            max-width: 650px;
-        }
+.notification {
+    width: 38px;
+    height: 38px;
 
-        .hero-text span {
-            display: inline-block;
+    border: 1px solid #eaecf0;
 
-            background: #ccfbf1;
-            color: #0f766e;
+    border-radius: 9px;
 
-            padding: 6px 14px;
-            border-radius: 20px;
+    background: white;
 
-            font-size: 13px;
-            font-weight: 600;
+    cursor: pointer;
 
-            margin-bottom: 15px;
-        }
+    font-size: 17px;
+}
 
-        .hero-text h2 {
-            font-size: 38px;
-            line-height: 1.2;
-            margin-bottom: 12px;
+.avatar {
+    width: 38px;
+    height: 38px;
 
-            color: #134e4a;
-        }
+    border-radius: 50%;
 
-        .hero-text p {
-            color: #64748b;
-            font-size: 16px;
-            line-height: 1.7;
-        }
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #06b6d4
+    );
 
-        .hero-icon {
-            font-size: 90px;
-            opacity: 0.8;
-        }
+    color: white;
 
-        /* ================= ADD PRODUCT ================= */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .form-section {
-            max-width: 1200px;
-            margin: 30px auto;
+    font-size: 13px;
+    font-weight: 700;
+}
 
-            background: white;
+/* =====================================================
+   CONTENT
+===================================================== */
 
-            border-radius: 18px;
+.content {
+    padding: 32px 35px;
+    max-width: 1500px;
+}
 
-            padding: 28px;
+/* =====================================================
+   WELCOME
+===================================================== */
 
-            box-shadow:
-                0 8px 30px rgba(15, 118, 110, 0.08);
-        }
+.welcome {
+    background: linear-gradient(
+        120deg,
+        #1d4ed8,
+        #2563eb 55%,
+        #06b6d4
+    );
 
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+    border-radius: 18px;
 
-            margin-bottom: 22px;
-        }
+    padding: 28px 32px;
 
-        .section-title .icon {
-            width: 40px;
-            height: 40px;
+    color: white;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-            background: #ccfbf1;
-            color: #0f766e;
+    overflow: hidden;
 
-            border-radius: 10px;
-        }
+    position: relative;
+}
 
-        .section-title h3 {
-            font-size: 20px;
-            color: #134e4a;
-        }
+.welcome::after {
+    content: "";
 
-        .section-title p {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-top: 3px;
-        }
+    width: 260px;
+    height: 260px;
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
+    border-radius: 50%;
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
+    background: rgba(255,255,255,0.08);
 
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
+    position: absolute;
 
-        label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #475569;
-            margin-bottom: 7px;
-        }
+    right: 80px;
+    top: -150px;
+}
 
-        input,
-        textarea {
-            width: 100%;
+.welcome h2 {
+    font-size: 25px;
+    margin-bottom: 7px;
+}
 
-            border: 1px solid #dbe5ea;
+.welcome p {
+    font-size: 13px;
+    color: #dbeafe;
+}
 
-            background: #f8fafc;
+.add-main-btn {
+    background: white;
+    color: #1d4ed8;
 
-            border-radius: 10px;
+    border: none;
 
-            padding: 13px 14px;
+    padding: 12px 20px;
 
-            font-size: 14px;
+    border-radius: 9px;
 
-            outline: none;
+    font-weight: 700;
 
-            transition: 0.25s;
-        }
+    cursor: pointer;
 
-        input:focus,
-        textarea:focus {
-            border-color: #14b8a6;
+    position: relative;
+    z-index: 2;
 
-            background: white;
+    transition: 0.25s;
+}
 
-            box-shadow:
-                0 0 0 3px rgba(20, 184, 166, 0.1);
-        }
+.add-main-btn:hover {
+    transform: translateY(-2px);
 
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.15);
+}
 
-        .submit-row {
-            margin-top: 20px;
-            display: flex;
-            justify-content: flex-end;
-        }
+/* =====================================================
+   STATISTICS
+===================================================== */
 
-        .submit-btn {
-            background: linear-gradient(
-                135deg,
-                #0f766e,
-                #0891b2
-            );
+.stats {
+    display: grid;
 
-            color: white;
+    grid-template-columns:
+        repeat(4, 1fr);
 
-            border: none;
+    gap: 18px;
 
-            padding: 13px 26px;
+    margin: 25px 0;
+}
 
-            border-radius: 10px;
+.stat-card {
+    background: white;
 
-            font-size: 14px;
-            font-weight: 600;
+    border: 1px solid #eaecf0;
 
-            cursor: pointer;
+    border-radius: 14px;
 
-            transition: 0.3s;
-        }
+    padding: 20px;
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-            box-shadow:
-                0 8px 20px rgba(8, 145, 178, 0.25);
-        }
+.stat-info p {
+    font-size: 12px;
+    color: #667085;
+    margin-bottom: 7px;
+}
 
-        /* ================= PRODUCTS ================= */
+.stat-info h3 {
+    font-size: 25px;
+    color: #101828;
+}
 
-        .products-section {
-            max-width: 1200px;
-            margin: 45px auto 100px;
-        }
+.stat-icon {
+    width: 45px;
+    height: 45px;
 
-        .products-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+    border-radius: 12px;
 
-            margin-bottom: 22px;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .products-header h2 {
-            color: #134e4a;
-            font-size: 25px;
-        }
+    font-size: 20px;
+}
 
-        .product-count {
-            background: #ccfbf1;
-            color: #0f766e;
+.blue {
+    background: #eff6ff;
+    color: #2563eb;
+}
 
-            padding: 7px 14px;
+.green {
+    background: #ecfdf3;
+    color: #12b76a;
+}
 
-            border-radius: 20px;
+.orange {
+    background: #fff7ed;
+    color: #f97316;
+}
 
-            font-size: 13px;
-            font-weight: 600;
-        }
+.purple {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
 
-        .product-container {
-            display: grid;
+/* =====================================================
+   PRODUCTS HEADER
+===================================================== */
 
-            grid-template-columns:
-                repeat(auto-fit, minmax(260px, 1fr));
+.products-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-            gap: 25px;
-        }
+    margin: 35px 0 18px;
+}
 
-        /* ================= PRODUCT CARD ================= */
+.products-title h2 {
+    font-size: 19px;
+    color: #101828;
+}
 
-        .product-card {
-            background: white;
+.products-title p {
+    font-size: 12px;
+    color: #98a2b3;
+    margin-top: 4px;
+}
 
-            border-radius: 18px;
+.search {
+    position: relative;
+}
 
-            overflow: hidden;
+.search input {
+    width: 230px;
 
-            border: 1px solid #e5eef2;
+    padding: 10px 14px 10px 38px;
 
-            box-shadow:
-                0 5px 20px rgba(15, 23, 42, 0.06);
+    border: 1px solid #d0d5dd;
 
-            transition: all 0.3s ease;
-        }
+    border-radius: 9px;
 
-        .product-card:hover {
-            transform: translateY(-7px);
+    outline: none;
 
-            box-shadow:
-                0 15px 35px rgba(15, 118, 110, 0.14);
-        }
+    font-size: 13px;
+}
 
-        .image-wrapper {
-            height: 220px;
+.search span {
+    position: absolute;
 
-            position: relative;
+    left: 13px;
+    top: 9px;
 
-            background: #f0fdfa;
+    color: #98a2b3;
+}
 
-            overflow: hidden;
-        }
+/* =====================================================
+   PRODUCT GRID
+===================================================== */
 
-        .product-image {
-            width: 100%;
-            height: 100%;
+.product-container {
+    display: grid;
 
-            object-fit: cover;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
 
-            transition: transform 0.4s;
-        }
+    gap: 20px;
+}
 
-        .product-card:hover .product-image {
-            transform: scale(1.06);
-        }
+.product-card {
+    background: white;
 
-        .medical-badge {
-            position: absolute;
+    border: 1px solid #eaecf0;
 
-            top: 14px;
-            left: 14px;
+    border-radius: 15px;
 
-            background: white;
-            color: #0f766e;
+    overflow: hidden;
 
-            padding: 6px 10px;
+    transition:
+        transform 0.25s,
+        box-shadow 0.25s;
+}
 
-            border-radius: 20px;
+.product-card:hover {
+    transform: translateY(-5px);
 
-            font-size: 11px;
-            font-weight: 700;
+    box-shadow:
+        0 12px 30px rgba(16,24,40,0.10);
+}
 
-            box-shadow:
-                0 3px 10px rgba(0,0,0,0.1);
-        }
+/* =====================================================
+   PRODUCT IMAGE
+===================================================== */
 
-        .product-details {
-            padding: 20px;
-        }
+.product-image-area {
+    height: 205px;
 
-        .product-title {
-            font-size: 18px;
-            font-weight: 700;
+    position: relative;
 
-            color: #134e4a;
+    background: #f2f7ff;
 
-            margin-bottom: 8px;
-        }
+    overflow: hidden;
+}
 
-        .product-description {
-            font-size: 13px;
+.product-image {
+    width: 100%;
+    height: 100%;
 
-            line-height: 1.6;
+    object-fit: cover;
 
-            color: #64748b;
+    transition: 0.4s;
+}
 
-            min-height: 63px;
-        }
+.product-card:hover .product-image {
+    transform: scale(1.07);
+}
 
-        .product-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+.status {
+    position: absolute;
 
-            margin-top: 17px;
+    top: 12px;
+    left: 12px;
 
-            padding-top: 14px;
+    background: #ecfdf3;
 
-            border-top: 1px solid #edf2f4;
-        }
+    color: #027a48;
 
-        .verified {
-            color: #0f766e;
+    padding: 5px 9px;
 
-            font-size: 12px;
+    border-radius: 20px;
 
-            font-weight: 600;
-        }
+    font-size: 10px;
 
-        .view-btn {
-            border: none;
+    font-weight: 700;
+}
 
-            background: #ecfeff;
+.product-actions {
+    position: absolute;
 
-            color: #0891b2;
+    right: 12px;
+    top: 12px;
+}
 
-            padding: 7px 12px;
+.action-btn {
+    width: 32px;
+    height: 32px;
 
-            border-radius: 8px;
+    border: none;
 
-            font-size: 12px;
+    border-radius: 8px;
 
-            font-weight: 600;
-        }
+    background: rgba(255,255,255,0.92);
 
-        /* ================= EMPTY STATE ================= */
+    cursor: pointer;
 
-        .empty {
-            text-align: center;
+    font-size: 15px;
+}
 
-            background: white;
+/* =====================================================
+   PRODUCT DETAILS
+===================================================== */
 
-            padding: 60px 20px;
+.product-details {
+    padding: 17px;
+}
 
-            border-radius: 18px;
+.product-title {
+    color: #101828;
 
-            color: #94a3b8;
-        }
+    font-size: 15px;
 
-        .empty-icon {
-            font-size: 50px;
-            margin-bottom: 12px;
-        }
+    font-weight: 700;
 
-        /* ================= FOOTER ================= */
+    margin-bottom: 7px;
 
-        footer {
-            background: #134e4a;
+    white-space: nowrap;
 
-            color: #d1fae5;
+    overflow: hidden;
 
-            text-align: center;
+    text-overflow: ellipsis;
+}
 
-            padding: 20px;
+.product-description {
+    color: #667085;
 
-            font-size: 13px;
-        }
+    font-size: 12px;
 
-        /* ================= RESPONSIVE ================= */
+    line-height: 1.6;
 
-        @media (max-width: 768px) {
+    height: 39px;
 
-            header {
-                padding: 18px 5%;
-            }
+    overflow: hidden;
+}
 
-            .header-btn {
-                display: none;
-            }
+.product-bottom {
+    margin-top: 15px;
 
-            .hero {
-                margin: 25px 15px;
+    padding-top: 13px;
 
-                padding: 25px;
+    border-top: 1px solid #f2f4f7;
 
-                text-align: center;
-            }
+    display: flex;
 
-            .hero-text h2 {
-                font-size: 29px;
-            }
+    align-items: center;
 
-            .hero-icon {
-                display: none;
-            }
+    justify-content: space-between;
+}
 
-            .form-section,
-            .products-section {
-                margin-left: 15px;
-                margin-right: 15px;
-            }
+.verified {
+    color: #12b76a;
 
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
+    font-size: 11px;
 
-            .form-group.full {
-                grid-column: auto;
-            }
+    font-weight: 600;
+}
 
-            .submit-row {
-                justify-content: stretch;
-            }
+.details-btn {
+    border: none;
 
-            .submit-btn {
-                width: 100%;
-            }
+    background: #eff6ff;
 
-        }
+    color: #2563eb;
 
-    </style>
+    padding: 7px 11px;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.empty {
+    background: white;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 15px;
+
+    padding: 65px 20px;
+
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 50px;
+
+    margin-bottom: 12px;
+}
+
+.empty h3 {
+    color: #101828;
+
+    margin-bottom: 6px;
+}
+
+.empty p {
+    color: #98a2b3;
+
+    font-size: 13px;
+}
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(16,24,40,0.55);
+
+    backdrop-filter: blur(4px);
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 1000;
+
+    padding: 20px;
+}
+
+.modal-box {
+    background: white;
+
+    width: 100%;
+
+    max-width: 550px;
+
+    border-radius: 18px;
+
+    padding: 27px;
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,0.20);
+
+    animation: modalIn 0.25s ease;
+}
+
+@keyframes modalIn {
+
+    from {
+        transform: translateY(15px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+}
+
+.modal-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+.modal-header h2 {
+    font-size: 20px;
+}
+
+.close {
+    width: 34px;
+    height: 34px;
+
+    border: none;
+
+    background: #f2f4f7;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 17px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #344054;
+
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 13px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,0.10);
+}
+
+.form-group textarea {
+    resize: vertical;
+
+    min-height: 90px;
+}
+
+.modal-submit {
+    width: 100%;
+
+    border: none;
+
+    padding: 13px;
+
+    border-radius: 9px;
+
+    background: linear-gradient(
+        135deg,
+        #1d4ed8,
+        #2563eb
+    );
+
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    margin-top: 5px;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    margin-top: 45px;
+
+    padding: 20px;
+
+    border-top: 1px solid #eaecf0;
+
+    color: #98a2b3;
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1200px) {
+
+    .product-container {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+}
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 70px;
+        padding: 20px 10px;
+    }
+
+    .brand-name,
+    .brand-subtitle,
+    .menu-title,
+    .menu a span,
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .brand {
+        justify-content: center;
+        padding-bottom: 30px;
+    }
+
+    .menu a {
+        justify-content: center;
+    }
+
+    .main {
+        margin-left: 70px;
+
+        width: calc(100% - 70px);
+    }
+
+    .stats {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .product-container {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .topbar {
+        padding: 0 18px;
+    }
+
+    .content {
+        padding: 20px 15px;
+    }
+
+    .welcome {
+        padding: 23px;
+
+        display: block;
+    }
+
+    .welcome h2 {
+        font-size: 21px;
+    }
+
+    .add-main-btn {
+        margin-top: 18px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .products-top {
+        display: block;
+    }
+
+    .search {
+        margin-top: 14px;
+    }
+
+    .search input {
+        width: 100%;
+    }
+
+    .product-container {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-<!-- ================= HEADER ================= -->
+<div class="dashboard">
 
-<header>
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-    <div class="logo">
+<aside class="sidebar">
 
-        <div class="logo-icon">
+    <div class="brand">
+
+        <div class="brand-icon">
             +
         </div>
 
         <div>
-            <h1>MedCare</h1>
-            <p>Trusted Medical Solutions</p>
+            <div class="brand-name">
+                MedixCare
+            </div>
+
+            <div class="brand-subtitle">
+                HEALTHCARE SYSTEM
+            </div>
         </div>
 
     </div>
 
-    <button class="header-btn"
-            onclick="document.getElementById('addProduct').scrollIntoView({behavior:'smooth'})">
-        + Add Product
-    </button>
 
-</header>
+    <div class="menu-title">
+        Main Menu
+    </div>
+
+    <ul class="menu">
+
+        <li>
+            <a href="#" class="active">
+                <div class="menu-icon">⌂</div>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#products">
+                <div class="menu-icon">▣</div>
+                <span>Products</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#addProduct">
+                <div class="menu-icon">＋</div>
+                <span>Add Product</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                <div class="menu-icon">▤</div>
+                <span>Reports</span>
+            </a>
+        </li>
+
+    </ul>
 
 
-<!-- ================= HERO ================= -->
+    <div class="menu-title" style="margin-top:30px;">
+        Management
+    </div>
 
-<section class="hero">
+    <ul class="menu">
 
-    <div class="hero-text">
+        <li>
+            <a href="#">
+                <div class="menu-icon">⚙</div>
+                <span>Settings</span>
+            </a>
+        </li>
 
-        <span>HEALTHCARE COLLECTION</span>
+        <li>
+            <a href="#">
+                <div class="menu-icon">?</div>
+                <span>Help Center</span>
+            </a>
+        </li>
 
-        <h2>
-            Quality Medical Products
-            For Better Care
-        </h2>
+    </ul>
+
+
+    <div class="sidebar-bottom">
 
         <p>
-            Explore our collection of trusted healthcare and
-            medical products designed to support better health,
-            comfort, and patient care.
+            <strong>Healthcare Admin</strong><br>
+            Manage your medical product catalog easily.
         </p>
 
     </div>
 
-    <div class="hero-icon">
-        🩺
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+    <div class="page-title">
+
+        <h1>Product Dashboard</h1>
+
+        <p>
+            Manage your healthcare product collection
+        </p>
+
+    </div>
+
+
+    <div class="user-area">
+
+        <button class="notification">
+            ♢
+        </button>
+
+        <div class="avatar">
+            AD
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CONTENT -->
+
+<div class="content">
+
+
+<!-- WELCOME -->
+
+<section class="welcome">
+
+    <div>
+
+        <h2>
+            Welcome to MedixCare 👋
+        </h2>
+
+        <p>
+            Manage and organize your medical products
+            from one place.
+        </p>
+
+    </div>
+
+
+    <button
+        class="add-main-btn"
+        onclick="openModal()">
+
+        + Add New Product
+
+    </button>
+
+</section>
+
+
+<!-- STATISTICS -->
+
+<section class="stats">
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <p>Total Products</p>
+
+            <h3>
+                <%= products.size() %>
+            </h3>
+
+        </div>
+
+        <div class="stat-icon blue">
+            ▣
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <p>Active Products</p>
+
+            <h3>
+                <%= products.size() %>
+            </h3>
+
+        </div>
+
+        <div class="stat-icon green">
+            ✓
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <p>Categories</p>
+
+            <h3>04</h3>
+
+        </div>
+
+        <div class="stat-icon orange">
+            ◈
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-info">
+
+            <p>System Status</p>
+
+            <h3 style="font-size:18px;color:#12b76a;">
+                Online
+            </h3>
+
+        </div>
+
+        <div class="stat-icon purple">
+            ●
+        </div>
+
     </div>
 
 </section>
 
 
-<!-- ================= ADD PRODUCT ================= -->
+<!-- PRODUCTS -->
 
-<section class="form-section" id="addProduct">
+<section id="products">
 
-    <div class="section-title">
+    <div class="products-top">
 
-        <div class="icon">
-            +
+        <div class="products-title">
+
+            <h2>
+                Medical Products
+            </h2>
+
+            <p>
+                Browse your current healthcare inventory
+            </p>
+
         </div>
 
-        <div>
-            <h3>Add New Product</h3>
-            <p>Add a medical product to your showcase</p>
+
+        <div class="search">
+
+            <span>⌕</span>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search products..."
+                onkeyup="searchProducts()"
+            >
+
         </div>
 
     </div>
 
-    <form method="post" action="showcase.jsp">
 
-        <div class="form-grid">
+<% if (products.isEmpty()) { %>
+
+    <div class="empty">
+
+        <div class="empty-icon">
+            🏥
+        </div>
+
+        <h3>
+            No Products Available
+        </h3>
+
+        <p>
+            Start building your medical product catalog
+            by adding your first product.
+        </p>
+
+        <button
+            class="add-main-btn"
+            style="margin-top:18px;"
+            onclick="openModal()">
+
+            + Add First Product
+
+        </button>
+
+    </div>
+
+<% } else { %>
+
+
+    <div class="product-container" id="productContainer">
+
+    <% for (Map<String, String> product : products) { %>
+
+        <div class="product-card"
+             data-name="<%= product.get("name") %>">
+
+
+            <div class="product-image-area">
+
+                <img
+                    src="<%= product.get("imageUrl") %>"
+                    alt="<%= product.get("name") %>"
+                    class="product-image"
+                >
+
+
+                <div class="status">
+                    ● ACTIVE
+                </div>
+
+
+                <div class="product-actions">
+
+                    <button
+                        class="action-btn"
+                        title="More options">
+
+                        ⋮
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="product-details">
+
+                <div class="product-title">
+
+                    <%= product.get("name") %>
+
+                </div>
+
+
+                <div class="product-description">
+
+                    <%= product.get("description") %>
+
+                </div>
+
+
+                <div class="product-bottom">
+
+                    <span class="verified">
+                        ✓ Verified Product
+                    </span>
+
+                    <button class="details-btn">
+                        View
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    <% } %>
+
+    </div>
+
+<% } %>
+
+</section>
+
+
+<footer>
+
+    © 2026 MedixCare Healthcare Solutions
+    · Secure Medical Product Management
+
+</footer>
+
+
+</div>
+
+</main>
+
+</div>
+
+
+<!-- =====================================================
+     ADD PRODUCT MODAL
+===================================================== -->
+
+<div class="modal" id="productModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>
+                Add New Product
+            </h2>
+
+            <button
+                class="close"
+                onclick="closeModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <form
+            method="post"
+            action="showcase.jsp">
+
 
             <div class="form-group">
 
-                <label>Product Name</label>
+                <label>
+                    Product Name
+                </label>
 
                 <input
                     type="text"
                     name="name"
-                    placeholder="e.g. Digital Blood Pressure Monitor"
+                    placeholder="Enter product name"
                     required
                 >
 
@@ -675,7 +1444,9 @@
 
             <div class="form-group">
 
-                <label>Image URL</label>
+                <label>
+                    Image URL
+                </label>
 
                 <input
                     type="url"
@@ -687,137 +1458,109 @@
             </div>
 
 
-            <div class="form-group full">
+            <div class="form-group">
 
-                <label>Product Description</label>
+                <label>
+                    Product Description
+                </label>
 
                 <textarea
                     name="description"
-                    placeholder="Enter a short description of the medical product..."
+                    placeholder="Describe the medical product..."
                     required
                 ></textarea>
 
             </div>
 
-        </div>
 
+            <button
+                type="submit"
+                class="modal-submit">
 
-        <div class="submit-row">
+                Add Product
 
-            <button class="submit-btn" type="submit">
-                + Add Product
             </button>
 
-        </div>
-
-    </form>
-
-</section>
-
-
-<!-- ================= PRODUCTS ================= -->
-
-<section class="products-section">
-
-    <div class="products-header">
-
-        <h2>Our Products</h2>
-
-        <div class="product-count">
-            <%= products.size() %> Products
-        </div>
+        </form>
 
     </div>
 
-
-    <% if (products.isEmpty()) { %>
-
-        <div class="empty">
-
-            <div class="empty-icon">
-                🏥
-            </div>
-
-            <h3>No Products Yet</h3>
-
-            <p>
-                Add your first medical product using the form above.
-            </p>
-
-        </div>
-
-    <% } else { %>
-
-        <div class="product-container">
-
-            <% for (Map<String, String> product : products) { %>
-
-                <div class="product-card">
-
-                    <div class="image-wrapper">
-
-                        <img
-                            src="<%= product.get("imageUrl") %>"
-                            alt="<%= product.get("name") %>"
-                            class="product-image"
-                        >
-
-                        <div class="medical-badge">
-                            MEDICAL
-                        </div>
-
-                    </div>
+</div>
 
 
-                    <div class="product-details">
+<script>
 
-                        <div class="product-title">
-                            <%= product.get("name") %>
-                        </div>
+/* =====================================================
+   MODAL
+===================================================== */
 
-                        <div class="product-description">
-                            <%= product.get("description") %>
-                        </div>
+function openModal() {
 
+    document.getElementById("productModal")
+        .style.display = "flex";
 
-                        <div class="product-footer">
+}
 
-                            <span class="verified">
-                                ✓ Healthcare Product
-                            </span>
+function closeModal() {
 
-                            <button class="view-btn">
-                                View
-                            </button>
+    document.getElementById("productModal")
+        .style.display = "none";
 
-                        </div>
-
-                    </div>
-
-                </div>
-
-            <% } %>
-
-        </div>
-
-    <% } %>
-
-</section>
+}
 
 
-<!-- ================= FOOTER ================= -->
+/* Close when clicking outside */
 
-<footer>
+window.onclick = function(event) {
 
-    © 2026 MedCare Healthcare Solutions.
-    All rights reserved.
+    const modal =
+        document.getElementById("productModal");
 
-</footer>
+    if (event.target === modal) {
+        closeModal();
+    }
+
+};
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function searchProducts() {
+
+    const input =
+        document.getElementById("searchInput");
+
+    const search =
+        input.value.toLowerCase();
+
+    const cards =
+        document.querySelectorAll(".product-card");
+
+
+    cards.forEach(function(card) {
+
+        const name =
+            card.getAttribute("data-name")
+                .toLowerCase();
+
+        if (name.includes(search)) {
+
+            card.style.display = "";
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+}
+
+</script>
 
 </body>
 
 </html>
-
-
-
-
