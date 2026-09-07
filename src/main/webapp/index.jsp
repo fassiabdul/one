@@ -40,15 +40,17 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MedixCare | Product Dashboard</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>MedixCare | Healthcare Dashboard</title>
 
 <style>
 
-/* =====================================================
+/* =========================================================
    RESET
-===================================================== */
+========================================================= */
 
 * {
     margin: 0;
@@ -56,328 +58,859 @@
     box-sizing: border-box;
 }
 
+:root {
+
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+
+    --cyan: #06b6d4;
+
+    --dark: #0f172a;
+    --dark-2: #1e293b;
+
+    --text: #172033;
+    --muted: #64748b;
+
+    --border: #e2e8f0;
+
+    --background: #f8fafc;
+
+    --white: #ffffff;
+
+    --green: #10b981;
+
+}
+
 body {
-    font-family: Inter, "Segoe UI", Arial, sans-serif;
-    background: #f7f9fc;
-    color: #172033;
-}
 
-/* =====================================================
-   LAYOUT
-===================================================== */
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 
-.dashboard {
-    display: flex;
+    background:
+        linear-gradient(
+            135deg,
+            #f8fafc,
+            #eef4ff
+        );
+
+    color: var(--text);
+
     min-height: 100vh;
+
 }
 
-/* =====================================================
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.app {
+
+    display: flex;
+
+    min-height: 100vh;
+
+}
+
+/* =========================================================
    SIDEBAR
-===================================================== */
+========================================================= */
 
 .sidebar {
-    width: 245px;
-    background: #101828;
+
+    width: 250px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0f172a,
+            #172554
+        );
+
     color: white;
-    padding: 25px 18px;
+
+    padding: 28px 18px;
+
     position: fixed;
+
     top: 0;
-    left: 0;
     bottom: 0;
+    left: 0;
+
     z-index: 100;
+
 }
 
-.brand {
+/* LOGO */
+
+.logo {
+
     display: flex;
+
     align-items: center;
+
     gap: 12px;
-    padding: 5px 10px 35px;
+
+    padding: 5px 8px;
+
+    margin-bottom: 42px;
+
 }
 
-.brand-icon {
-    width: 42px;
-    height: 42px;
+.logo-icon {
 
-    background: linear-gradient(
-        135deg,
-        #2563eb,
-        #06b6d4
-    );
+    width: 43px;
+    height: 43px;
 
-    border-radius: 12px;
+    background:
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #2563eb
+        );
+
+    border-radius: 13px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 25px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 8px 25px
+        rgba(37,99,235,.35);
+
 }
 
-.brand-name {
-    font-size: 20px;
-    font-weight: 700;
+.logo-text h2 {
+
+    font-size: 19px;
+
+    letter-spacing: -.4px;
+
 }
 
-.brand-subtitle {
-    font-size: 10px;
-    color: #98a2b3;
+.logo-text span {
+
+    display: block;
+
+    font-size: 9px;
+
+    color: #94a3b8;
+
     margin-top: 2px;
-}
 
-.menu-title {
-    color: #667085;
-    font-size: 10px;
-    text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 0 12px;
-    margin-bottom: 10px;
+
 }
 
-.menu {
+/* NAVIGATION */
+
+.nav-label {
+
+    color: #64748b;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.2px;
+
+    margin:
+
+        0 12px
+        10px;
+
+}
+
+.nav {
+
     list-style: none;
+
 }
 
-.menu li {
-    margin-bottom: 5px;
+.nav li {
+
+    margin-bottom: 6px;
+
 }
 
-.menu a {
+.nav a {
+
     display: flex;
+
     align-items: center;
+
     gap: 13px;
+
+    padding: 12px 14px;
+
+    border-radius: 10px;
+
+    color: #94a3b8;
 
     text-decoration: none;
 
-    color: #98a2b3;
+    font-size: 13px;
 
-    padding: 12px 13px;
+    transition: .25s;
 
-    border-radius: 9px;
-
-    font-size: 14px;
-
-    transition: 0.25s;
 }
 
-.menu a:hover,
-.menu a.active {
+.nav a:hover {
+
+    background:
+        rgba(255,255,255,.07);
+
     color: white;
 
-    background: linear-gradient(
-        90deg,
-        #1d4ed8,
-        #2563eb
-    );
 }
 
-.menu-icon {
+.nav a.active {
+
+    background:
+        linear-gradient(
+            90deg,
+            #2563eb,
+            #3b82f6
+        );
+
+    color: white;
+
+    box-shadow:
+        0 8px 20px
+        rgba(37,99,235,.25);
+
+}
+
+.nav-icon {
+
     width: 20px;
+
     text-align: center;
+
+    font-size: 16px;
+
 }
 
-/* =====================================================
-   SIDEBAR BOTTOM
-===================================================== */
+/* SIDEBAR CARD */
 
-.sidebar-bottom {
+.sidebar-card {
+
     position: absolute;
+
     bottom: 25px;
+
     left: 18px;
+
     right: 18px;
 
-    background: #172033;
+    padding: 17px;
 
-    padding: 15px;
+    border-radius: 15px;
 
-    border-radius: 12px;
+    background:
+        rgba(255,255,255,.07);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
 }
 
-.sidebar-bottom p {
-    color: #98a2b3;
-    font-size: 11px;
-    line-height: 1.5;
+.sidebar-card .online {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #86efac;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+
 }
 
-.sidebar-bottom strong {
-    color: white;
+.online-dot {
+
+    width: 7px;
+    height: 7px;
+
+    background: #22c55e;
+
+    border-radius: 50%;
+
 }
 
-/* =====================================================
+.sidebar-card p {
+
+    font-size: 10px;
+
+    line-height: 1.6;
+
+    color: #94a3b8;
+
+}
+
+/* =========================================================
    MAIN
-===================================================== */
+========================================================= */
 
 .main {
-    margin-left: 245px;
-    width: calc(100% - 245px);
+
+    margin-left: 250px;
+
+    width:
+        calc(100% - 250px);
+
 }
 
-/* =====================================================
-   TOPBAR
-===================================================== */
+/* =========================================================
+   HEADER
+========================================================= */
 
-.topbar {
-    height: 75px;
+.header {
 
-    background: white;
+    height: 76px;
 
-    border-bottom: 1px solid #eaecf0;
+    background:
+        rgba(255,255,255,.85);
+
+    backdrop-filter:
+        blur(15px);
+
+    border-bottom:
+        1px solid
+        var(--border);
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
-    padding: 0 35px;
+    padding:
+        0 35px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 50;
+
 }
 
-.page-title h1 {
-    font-size: 20px;
-    color: #101828;
+.header-left h1 {
+
+    font-size: 19px;
+
+    color: #0f172a;
+
 }
 
-.page-title p {
-    font-size: 12px;
-    color: #98a2b3;
+.header-left p {
+
+    color: #94a3b8;
+
+    font-size: 11px;
+
     margin-top: 3px;
+
 }
 
-.user-area {
+.header-right {
+
     display: flex;
+
     align-items: center;
-    gap: 12px;
+
+    gap: 14px;
+
 }
 
-.notification {
-    width: 38px;
-    height: 38px;
+/* SEARCH HEADER */
 
-    border: 1px solid #eaecf0;
+.header-search {
+
+    position: relative;
+
+}
+
+.header-search input {
+
+    width: 220px;
+
+    padding:
+        9px
+        12px
+        9px
+        35px;
+
+    border:
+        1px solid
+        var(--border);
 
     border-radius: 9px;
 
-    background: white;
+    outline: none;
 
-    cursor: pointer;
+    font-size: 11px;
 
-    font-size: 17px;
+    background: #f8fafc;
+
+}
+
+.header-search span {
+
+    position: absolute;
+
+    left: 12px;
+
+    top: 8px;
+
+    color: #94a3b8;
+
+}
+
+/* PROFILE */
+
+.profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding-left: 10px;
+
+    border-left:
+        1px solid
+        var(--border);
+
 }
 
 .avatar {
-    width: 38px;
-    height: 38px;
 
-    border-radius: 50%;
+    width: 36px;
+    height: 36px;
 
-    background: linear-gradient(
-        135deg,
-        #2563eb,
-        #06b6d4
-    );
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #06b6d4
+        );
 
     color: white;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 12px;
+
+    font-weight: 800;
+
 }
 
-/* =====================================================
+.profile-info strong {
+
+    display: block;
+
+    font-size: 11px;
+
+}
+
+.profile-info span {
+
+    color: #94a3b8;
+
+    font-size: 9px;
+
+}
+
+/* =========================================================
    CONTENT
-===================================================== */
+========================================================= */
 
 .content {
-    padding: 32px 35px;
-    max-width: 1500px;
+
+    padding:
+        30px 35px 50px;
+
 }
 
-/* =====================================================
-   WELCOME
-===================================================== */
+/* =========================================================
+   HERO
+========================================================= */
 
-.welcome {
-    background: linear-gradient(
-        120deg,
-        #1d4ed8,
-        #2563eb 55%,
-        #06b6d4
-    );
+.hero {
 
-    border-radius: 18px;
+    min-height: 210px;
 
-    padding: 28px 32px;
+    border-radius: 22px;
+
+    padding:
+        32px 35px;
 
     color: white;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: relative;
 
     overflow: hidden;
 
-    position: relative;
+    background:
+        linear-gradient(
+            120deg,
+            #1e3a8a,
+            #2563eb 50%,
+            #0891b2
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    box-shadow:
+        0 18px 45px
+        rgba(37,99,235,.20);
+
 }
 
-.welcome::after {
+.hero::before {
+
     content: "";
-
-    width: 260px;
-    height: 260px;
-
-    border-radius: 50%;
-
-    background: rgba(255,255,255,0.08);
 
     position: absolute;
 
-    right: 80px;
-    top: -150px;
+    width: 330px;
+    height: 330px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    right: 100px;
+
+    top: -190px;
+
 }
 
-.welcome h2 {
-    font-size: 25px;
-    margin-bottom: 7px;
+.hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 250px;
+    height: 250px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.07);
+
+    right: -80px;
+
+    bottom: -130px;
+
 }
 
-.welcome p {
-    font-size: 13px;
+.hero-content {
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+.hero-badge {
+
+    display: inline-block;
+
+    background:
+        rgba(255,255,255,.13);
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    padding:
+        6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    margin-bottom: 13px;
+
+}
+
+.hero h2 {
+
+    font-size: 27px;
+
+    margin-bottom: 8px;
+
+    letter-spacing: -.5px;
+
+}
+
+.hero p {
+
+    font-size: 12px;
+
     color: #dbeafe;
+
+    max-width: 480px;
+
+    line-height: 1.6;
+
 }
 
-.add-main-btn {
+.hero-button {
+
+    position: relative;
+
+    z-index: 3;
+
     background: white;
+
     color: #1d4ed8;
 
     border: none;
 
-    padding: 12px 20px;
+    border-radius: 11px;
 
-    border-radius: 9px;
+    padding:
+        13px 18px;
+
+    font-weight: 800;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 25px
+        rgba(0,0,0,.12);
+
+    transition: .25s;
+
+}
+
+.hero-button:hover {
+
+    transform:
+        translateY(-3px);
+
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 17px;
+
+    margin-top: 22px;
+
+}
+
+.stat {
+
+    background: white;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+.stat-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+.stat-icon {
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 11px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+
+}
+
+.icon-blue {
+
+    background: #eff6ff;
+    color: #2563eb;
+
+}
+
+.icon-green {
+
+    background: #ecfdf5;
+    color: #10b981;
+
+}
+
+.icon-orange {
+
+    background: #fff7ed;
+    color: #f97316;
+
+}
+
+.icon-purple {
+
+    background: #f5f3ff;
+    color: #7c3aed;
+
+}
+
+.stat-label {
+
+    color: #94a3b8;
+
+    font-size: 10px;
+
+    margin-top: 15px;
+
+}
+
+.stat-value {
+
+    color: #0f172a;
+
+    font-size: 25px;
+
+    font-weight: 800;
+
+    margin-top: 4px;
+
+}
+
+.stat-change {
+
+    color: #10b981;
+
+    font-size: 9px;
+
+    margin-top: 5px;
+
+}
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-head {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin:
+        34px 0 17px;
+
+}
+
+.section-head h2 {
+
+    font-size: 18px;
+
+}
+
+.section-head p {
+
+    color: #94a3b8;
+
+    font-size: 10px;
+
+    margin-top: 4px;
+
+}
+
+.add-button {
+
+    border: none;
+
+    background:
+        #eff6ff;
+
+    color:
+        #2563eb;
+
+    padding:
+        9px 13px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
 
     font-weight: 700;
 
     cursor: pointer;
 
-    position: relative;
-    z-index: 2;
-
-    transition: 0.25s;
 }
 
-.add-main-btn:hover {
-    transform: translateY(-2px);
+/* =========================================================
+   PRODUCT GRID
+========================================================= */
 
-    box-shadow:
-        0 8px 20px rgba(0,0,0,0.15);
-}
+.product-grid {
 
-/* =====================================================
-   STATISTICS
-===================================================== */
-
-.stats {
     display: grid;
 
     grid-template-columns:
@@ -385,599 +918,632 @@ body {
 
     gap: 18px;
 
-    margin: 25px 0;
 }
 
-.stat-card {
-    background: white;
-
-    border: 1px solid #eaecf0;
-
-    border-radius: 14px;
-
-    padding: 20px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.stat-info p {
-    font-size: 12px;
-    color: #667085;
-    margin-bottom: 7px;
-}
-
-.stat-info h3 {
-    font-size: 25px;
-    color: #101828;
-}
-
-.stat-icon {
-    width: 45px;
-    height: 45px;
-
-    border-radius: 12px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 20px;
-}
-
-.blue {
-    background: #eff6ff;
-    color: #2563eb;
-}
-
-.green {
-    background: #ecfdf3;
-    color: #12b76a;
-}
-
-.orange {
-    background: #fff7ed;
-    color: #f97316;
-}
-
-.purple {
-    background: #f5f3ff;
-    color: #7c3aed;
-}
-
-/* =====================================================
-   PRODUCTS HEADER
-===================================================== */
-
-.products-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin: 35px 0 18px;
-}
-
-.products-title h2 {
-    font-size: 19px;
-    color: #101828;
-}
-
-.products-title p {
-    font-size: 12px;
-    color: #98a2b3;
-    margin-top: 4px;
-}
-
-.search {
-    position: relative;
-}
-
-.search input {
-    width: 230px;
-
-    padding: 10px 14px 10px 38px;
-
-    border: 1px solid #d0d5dd;
-
-    border-radius: 9px;
-
-    outline: none;
-
-    font-size: 13px;
-}
-
-.search span {
-    position: absolute;
-
-    left: 13px;
-    top: 9px;
-
-    color: #98a2b3;
-}
-
-/* =====================================================
-   PRODUCT GRID
-===================================================== */
-
-.product-container {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap: 20px;
-}
+/* CARD */
 
 .product-card {
+
     background: white;
 
-    border: 1px solid #eaecf0;
+    border:
+        1px solid
+        var(--border);
 
-    border-radius: 15px;
+    border-radius: 17px;
 
     overflow: hidden;
 
     transition:
-        transform 0.25s,
-        box-shadow 0.25s;
+        .3s;
+
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
+
+    transform:
+        translateY(-6px);
 
     box-shadow:
-        0 12px 30px rgba(16,24,40,0.10);
+        0 18px 35px
+        rgba(15,23,42,.10);
+
 }
 
-/* =====================================================
-   PRODUCT IMAGE
-===================================================== */
+/* IMAGE */
 
-.product-image-area {
-    height: 205px;
+.product-image {
+
+    height: 180px;
+
+    background:
+        #eff6ff;
 
     position: relative;
 
-    background: #f2f7ff;
-
     overflow: hidden;
+
 }
 
-.product-image {
+.product-image img {
+
     width: 100%;
+
     height: 100%;
 
     object-fit: cover;
 
-    transition: 0.4s;
+    transition:
+        .4s;
+
 }
 
-.product-card:hover .product-image {
-    transform: scale(1.07);
+.product-card:hover
+.product-image img {
+
+    transform:
+        scale(1.08);
+
 }
+
+/* STATUS */
 
 .status {
+
     position: absolute;
 
-    top: 12px;
-    left: 12px;
+    top: 11px;
 
-    background: #ecfdf3;
+    left: 11px;
 
-    color: #027a48;
+    background:
+        rgba(255,255,255,.94);
 
-    padding: 5px 9px;
+    color:
+        #059669;
 
     border-radius: 20px;
 
-    font-size: 10px;
+    padding:
+        5px 8px;
 
-    font-weight: 700;
+    font-size: 8px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 4px 10px
+        rgba(0,0,0,.08);
+
 }
 
-.product-actions {
+/* CARD MENU */
+
+.card-menu {
+
     position: absolute;
 
-    right: 12px;
-    top: 12px;
+    right: 11px;
+
+    top: 11px;
+
 }
 
-.action-btn {
-    width: 32px;
-    height: 32px;
+.card-menu button {
+
+    width: 30px;
+    height: 30px;
 
     border: none;
 
     border-radius: 8px;
 
-    background: rgba(255,255,255,0.92);
+    background:
+        rgba(255,255,255,.94);
 
     cursor: pointer;
 
     font-size: 15px;
+
 }
 
-/* =====================================================
-   PRODUCT DETAILS
-===================================================== */
+/* DETAILS */
 
-.product-details {
-    padding: 17px;
+.product-info {
+
+    padding: 16px;
+
 }
 
-.product-title {
-    color: #101828;
+.product-name {
 
-    font-size: 15px;
+    font-size: 14px;
 
-    font-weight: 700;
+    font-weight: 800;
 
-    margin-bottom: 7px;
+    color: #0f172a;
 
     white-space: nowrap;
 
     overflow: hidden;
 
     text-overflow: ellipsis;
+
 }
 
 .product-description {
-    color: #667085;
 
-    font-size: 12px;
+    font-size: 10px;
+
+    color: #64748b;
 
     line-height: 1.6;
 
-    height: 39px;
+    margin-top: 7px;
+
+    height: 34px;
 
     overflow: hidden;
+
 }
 
-.product-bottom {
-    margin-top: 15px;
+.product-footer {
 
-    padding-top: 13px;
+    margin-top: 14px;
 
-    border-top: 1px solid #f2f4f7;
+    padding-top: 12px;
+
+    border-top:
+        1px solid
+        #f1f5f9;
 
     display: flex;
 
     align-items: center;
 
     justify-content: space-between;
+
 }
 
 .verified {
-    color: #12b76a;
 
-    font-size: 11px;
+    font-size: 9px;
 
-    font-weight: 600;
+    color: #059669;
+
+    font-weight: 700;
+
 }
 
-.details-btn {
+.view-btn {
+
     border: none;
 
-    background: #eff6ff;
+    background:
+        #2563eb;
 
-    color: #2563eb;
+    color: white;
 
-    padding: 7px 11px;
+    padding:
+        7px 10px;
 
     border-radius: 7px;
 
-    font-size: 11px;
+    font-size: 9px;
 
-    font-weight: 600;
+    font-weight: 700;
 
     cursor: pointer;
+
 }
 
-/* =====================================================
-   EMPTY STATE
-===================================================== */
+/* =========================================================
+   EMPTY
+========================================================= */
 
 .empty {
+
     background: white;
 
-    border: 1px solid #eaecf0;
+    border:
+        1px solid
+        var(--border);
 
-    border-radius: 15px;
+    border-radius: 17px;
 
     padding: 65px 20px;
 
     text-align: center;
+
 }
 
 .empty-icon {
-    font-size: 50px;
 
-    margin-bottom: 12px;
+    width: 65px;
+    height: 65px;
+
+    margin: auto;
+
+    border-radius: 18px;
+
+    background:
+        #eff6ff;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 30px;
+
 }
 
 .empty h3 {
-    color: #101828;
 
-    margin-bottom: 6px;
+    margin-top: 15px;
+
+    font-size: 17px;
+
 }
 
 .empty p {
-    color: #98a2b3;
 
-    font-size: 13px;
+    color: #94a3b8;
+
+    font-size: 10px;
+
+    margin-top: 6px;
+
 }
 
-/* =====================================================
+/* =========================================================
    MODAL
-===================================================== */
+========================================================= */
 
 .modal {
+
     display: none;
 
     position: fixed;
 
     inset: 0;
 
-    background: rgba(16,24,40,0.55);
+    background:
+        rgba(15,23,42,.60);
 
-    backdrop-filter: blur(4px);
+    backdrop-filter:
+        blur(8px);
 
     align-items: center;
 
     justify-content: center;
 
-    z-index: 1000;
+    z-index: 999;
 
     padding: 20px;
+
 }
 
 .modal-box {
-    background: white;
 
     width: 100%;
 
-    max-width: 550px;
+    max-width: 520px;
 
-    border-radius: 18px;
+    background: white;
+
+    border-radius: 20px;
 
     padding: 27px;
 
     box-shadow:
-        0 25px 60px rgba(0,0,0,0.20);
+        0 30px 80px
+        rgba(0,0,0,.25);
 
-    animation: modalIn 0.25s ease;
+    animation:
+        modalIn .25s ease;
+
 }
 
 @keyframes modalIn {
 
     from {
-        transform: translateY(15px);
+
         opacity: 0;
+
+        transform:
+            translateY(20px)
+            scale(.98);
+
     }
 
     to {
-        transform: translateY(0);
+
         opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
     }
 
 }
 
 .modal-header {
-    display: flex;
 
-    align-items: center;
+    display: flex;
 
     justify-content: space-between;
 
+    align-items: center;
+
     margin-bottom: 22px;
+
 }
 
 .modal-header h2 {
-    font-size: 20px;
+
+    font-size: 19px;
+
 }
 
 .close {
+
     width: 34px;
     height: 34px;
 
     border: none;
 
-    background: #f2f4f7;
+    border-radius: 9px;
 
-    border-radius: 8px;
+    background:
+        #f1f5f9;
+
+    font-size: 18px;
 
     cursor: pointer;
 
-    font-size: 17px;
 }
 
 .form-group {
-    margin-bottom: 16px;
+
+    margin-bottom: 15px;
+
 }
 
 .form-group label {
+
     display: block;
 
-    font-size: 12px;
+    font-size: 10px;
 
-    font-weight: 600;
+    font-weight: 700;
 
-    color: #344054;
+    color: #334155;
 
     margin-bottom: 6px;
+
 }
 
 .form-group input,
 .form-group textarea {
+
     width: 100%;
 
-    padding: 12px;
-
-    border: 1px solid #d0d5dd;
+    border:
+        1px solid
+        #cbd5e1;
 
     border-radius: 9px;
 
-    outline: none;
+    padding:
+        11px 12px;
 
     font-family: inherit;
 
-    font-size: 13px;
+    font-size: 11px;
+
+    outline: none;
+
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: #2563eb;
+
+    border-color:
+        #2563eb;
 
     box-shadow:
-        0 0 0 3px rgba(37,99,235,0.10);
+        0 0 0 3px
+        rgba(37,99,235,.08);
+
 }
 
 .form-group textarea {
-    resize: vertical;
 
     min-height: 90px;
+
+    resize: vertical;
+
 }
 
-.modal-submit {
+.submit {
+
     width: 100%;
 
     border: none;
 
     padding: 13px;
 
-    border-radius: 9px;
+    border-radius: 10px;
 
-    background: linear-gradient(
-        135deg,
-        #1d4ed8,
-        #2563eb
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #06b6d4
+        );
 
     color: white;
 
-    font-weight: 700;
+    font-size: 11px;
+
+    font-weight: 800;
 
     cursor: pointer;
 
     margin-top: 5px;
+
 }
 
-/* =====================================================
+/* =========================================================
    FOOTER
-===================================================== */
+========================================================= */
 
 footer {
+
     margin-top: 45px;
 
-    padding: 20px;
+    padding-top: 20px;
 
-    border-top: 1px solid #eaecf0;
-
-    color: #98a2b3;
-
-    font-size: 11px;
+    border-top:
+        1px solid
+        var(--border);
 
     text-align: center;
+
+    color: #94a3b8;
+
+    font-size: 9px;
+
 }
 
-/* =====================================================
+/* =========================================================
    RESPONSIVE
-===================================================== */
+========================================================= */
 
-@media (max-width: 1200px) {
+@media(max-width:1200px) {
 
-    .product-container {
+    .product-grid {
+
         grid-template-columns:
             repeat(3, 1fr);
+
     }
 
 }
 
-@media (max-width: 900px) {
+@media(max-width:950px) {
 
     .sidebar {
-        width: 70px;
-        padding: 20px 10px;
+
+        width: 72px;
+
     }
 
-    .brand-name,
-    .brand-subtitle,
-    .menu-title,
-    .menu a span,
-    .sidebar-bottom {
+    .logo-text,
+    .nav-label,
+    .nav a span,
+    .sidebar-card {
+
         display: none;
+
     }
 
-    .brand {
+    .logo {
+
         justify-content: center;
-        padding-bottom: 30px;
+
     }
 
-    .menu a {
+    .nav a {
+
         justify-content: center;
+
     }
 
     .main {
-        margin-left: 70px;
 
-        width: calc(100% - 70px);
+        margin-left: 72px;
+
+        width:
+            calc(100% - 72px);
+
     }
 
     .stats {
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
 
-    .product-container {
         grid-template-columns:
             repeat(2, 1fr);
+
     }
 
 }
 
-@media (max-width: 600px) {
+@media(max-width:700px) {
 
-    .topbar {
-        padding: 0 18px;
+    .header {
+
+        padding:
+            0 18px;
+
+    }
+
+    .header-search {
+
+        display: none;
+
     }
 
     .content {
-        padding: 20px 15px;
+
+        padding:
+            20px 15px;
+
     }
 
-    .welcome {
-        padding: 23px;
+    .hero {
 
         display: block;
+
+        padding: 25px;
+
     }
 
-    .welcome h2 {
-        font-size: 21px;
+    .hero h2 {
+
+        font-size: 22px;
+
     }
 
-    .add-main-btn {
-        margin-top: 18px;
+    .hero-button {
+
+        margin-top: 20px;
+
     }
 
     .stats {
+
         grid-template-columns: 1fr;
+
     }
 
-    .products-top {
+    .product-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .section-head {
+
         display: block;
+
     }
 
-    .search {
-        margin-top: 14px;
-    }
+    .add-button {
 
-    .search input {
-        width: 100%;
-    }
+        margin-top: 12px;
 
-    .product-container {
-        grid-template-columns: 1fr;
     }
 
 }
@@ -988,7 +1554,7 @@ footer {
 
 <body>
 
-<div class="dashboard">
+<div class="app">
 
 <!-- =====================================================
      SIDEBAR
@@ -996,90 +1562,130 @@ footer {
 
 <aside class="sidebar">
 
-    <div class="brand">
+    <div class="logo">
 
-        <div class="brand-icon">
+        <div class="logo-icon">
             +
         </div>
 
-        <div>
-            <div class="brand-name">
-                MedixCare
-            </div>
+        <div class="logo-text">
 
-            <div class="brand-subtitle">
-                HEALTHCARE SYSTEM
-            </div>
+            <h2>MedixCare</h2>
+
+            <span>
+                HEALTHCARE PLATFORM
+            </span>
+
         </div>
 
     </div>
 
 
-    <div class="menu-title">
-        Main Menu
+    <div class="nav-label">
+        Workspace
     </div>
 
-    <ul class="menu">
+    <ul class="nav">
 
         <li>
             <a href="#" class="active">
-                <div class="menu-icon">⌂</div>
-                <span>Dashboard</span>
+
+                <div class="nav-icon">
+                    ▦
+                </div>
+
+                <span>
+                    Dashboard
+                </span>
+
             </a>
         </li>
 
         <li>
             <a href="#products">
-                <div class="menu-icon">▣</div>
-                <span>Products</span>
+
+                <div class="nav-icon">
+                    ◫
+                </div>
+
+                <span>
+                    Products
+                </span>
+
             </a>
         </li>
 
         <li>
-            <a href="#addProduct">
-                <div class="menu-icon">＋</div>
-                <span>Add Product</span>
-            </a>
-        </li>
+            <a href="#products"
+               onclick="openModal()">
 
-        <li>
-            <a href="#">
-                <div class="menu-icon">▤</div>
-                <span>Reports</span>
+                <div class="nav-icon">
+                    ＋
+                </div>
+
+                <span>
+                    Add Product
+                </span>
+
             </a>
         </li>
 
     </ul>
 
 
-    <div class="menu-title" style="margin-top:30px;">
-        Management
+    <div class="nav-label"
+         style="margin-top:28px;">
+
+        System
+
     </div>
 
-    <ul class="menu">
+    <ul class="nav">
 
         <li>
             <a href="#">
-                <div class="menu-icon">⚙</div>
-                <span>Settings</span>
+
+                <div class="nav-icon">
+                    ◴
+                </div>
+
+                <span>
+                    Activity
+                </span>
+
             </a>
         </li>
 
         <li>
             <a href="#">
-                <div class="menu-icon">?</div>
-                <span>Help Center</span>
+
+                <div class="nav-icon">
+                    ⚙
+                </div>
+
+                <span>
+                    Settings
+                </span>
+
             </a>
         </li>
 
     </ul>
 
 
-    <div class="sidebar-bottom">
+    <div class="sidebar-card">
+
+        <div class="online">
+
+            <span class="online-dot"></span>
+
+            SYSTEM ONLINE
+
+        </div>
 
         <p>
-            <strong>Healthcare Admin</strong><br>
-            Manage your medical product catalog easily.
+            Your healthcare product
+            management system is running normally.
         </p>
 
     </div>
@@ -1093,34 +1699,62 @@ footer {
 
 <main class="main">
 
-<!-- TOP BAR -->
 
-<div class="topbar">
+<!-- HEADER -->
 
-    <div class="page-title">
+<header class="header">
 
-        <h1>Product Dashboard</h1>
+    <div class="header-left">
+
+        <h1>
+            Healthcare Dashboard
+        </h1>
 
         <p>
-            Manage your healthcare product collection
+            Product management & inventory overview
         </p>
 
     </div>
 
 
-    <div class="user-area">
+    <div class="header-right">
 
-        <button class="notification">
-            ♢
-        </button>
+        <div class="header-search">
 
-        <div class="avatar">
-            AD
+            <span>⌕</span>
+
+            <input
+                type="text"
+                placeholder="Search..."
+                onkeyup="headerSearch(this)"
+            >
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                AD
+            </div>
+
+            <div class="profile-info">
+
+                <strong>
+                    Admin
+                </strong>
+
+                <span>
+                    Healthcare Manager
+                </span>
+
+            </div>
+
         </div>
 
     </div>
 
-</div>
+</header>
 
 
 <!-- CONTENT -->
@@ -1128,26 +1762,34 @@ footer {
 <div class="content">
 
 
-<!-- WELCOME -->
+<!-- =====================================================
+     HERO
+===================================================== -->
 
-<section class="welcome">
+<section class="hero">
 
-    <div>
+    <div class="hero-content">
+
+        <div class="hero-badge">
+            MEDICAL INVENTORY SYSTEM
+        </div>
 
         <h2>
-            Welcome to MedixCare 👋
+            Manage healthcare products
+            smarter.
         </h2>
 
         <p>
-            Manage and organize your medical products
-            from one place.
+            Keep your medical product catalog
+            organized, accessible and easy to manage
+            from one centralized dashboard.
         </p>
 
     </div>
 
 
     <button
-        class="add-main-btn"
+        class="hero-button"
         onclick="openModal()">
 
         + Add New Product
@@ -1157,79 +1799,126 @@ footer {
 </section>
 
 
-<!-- STATISTICS -->
+<!-- =====================================================
+     STATISTICS
+===================================================== -->
 
 <section class="stats">
 
-    <div class="stat-card">
 
-        <div class="stat-info">
+    <div class="stat">
 
-            <p>Total Products</p>
+        <div class="stat-top">
 
-            <h3>
-                <%= products.size() %>
-            </h3>
+            <div>
+                <div class="stat-label">
+                    TOTAL PRODUCTS
+                </div>
 
-        </div>
+                <div class="stat-value">
+                    <%= products.size() %>
+                </div>
+            </div>
 
-        <div class="stat-icon blue">
-            ▣
-        </div>
-
-    </div>
-
-
-    <div class="stat-card">
-
-        <div class="stat-info">
-
-            <p>Active Products</p>
-
-            <h3>
-                <%= products.size() %>
-            </h3>
+            <div class="stat-icon icon-blue">
+                ◫
+            </div>
 
         </div>
 
-        <div class="stat-icon green">
-            ✓
+        <div class="stat-change">
+            ↑ Catalog inventory
         </div>
 
     </div>
 
 
-    <div class="stat-card">
+    <div class="stat">
 
-        <div class="stat-info">
+        <div class="stat-top">
 
-            <p>Categories</p>
+            <div>
 
-            <h3>04</h3>
+                <div class="stat-label">
+                    ACTIVE PRODUCTS
+                </div>
+
+                <div class="stat-value">
+                    <%= products.size() %>
+                </div>
+
+            </div>
+
+            <div class="stat-icon icon-green">
+                ✓
+            </div>
 
         </div>
 
-        <div class="stat-icon orange">
-            ◈
+        <div class="stat-change">
+            ● All products active
         </div>
 
     </div>
 
 
-    <div class="stat-card">
+    <div class="stat">
 
-        <div class="stat-info">
+        <div class="stat-top">
 
-            <p>System Status</p>
+            <div>
 
-            <h3 style="font-size:18px;color:#12b76a;">
-                Online
-            </h3>
+                <div class="stat-label">
+                    CATEGORIES
+                </div>
+
+                <div class="stat-value">
+                    04
+                </div>
+
+            </div>
+
+            <div class="stat-icon icon-orange">
+                ◈
+            </div>
 
         </div>
 
-        <div class="stat-icon purple">
-            ●
+        <div class="stat-change">
+            Medical product groups
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-top">
+
+            <div>
+
+                <div class="stat-label">
+                    SYSTEM STATUS
+                </div>
+
+                <div
+                    class="stat-value"
+                    style="
+                    color:#10b981;
+                    font-size:19px;">
+                    Online
+                </div>
+
+            </div>
+
+            <div class="stat-icon icon-purple">
+                ●
+            </div>
+
+        </div>
+
+        <div class="stat-change">
+            System operational
         </div>
 
     </div>
@@ -1237,37 +1926,34 @@ footer {
 </section>
 
 
-<!-- PRODUCTS -->
+<!-- =====================================================
+     PRODUCTS
+===================================================== -->
 
 <section id="products">
 
-    <div class="products-top">
+    <div class="section-head">
 
-        <div class="products-title">
+        <div>
 
             <h2>
                 Medical Products
             </h2>
 
             <p>
-                Browse your current healthcare inventory
+                Your healthcare product catalog
             </p>
 
         </div>
 
 
-        <div class="search">
+        <button
+            class="add-button"
+            onclick="openModal()">
 
-            <span>⌕</span>
+            + Add Product
 
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search products..."
-                onkeyup="searchProducts()"
-            >
-
-        </div>
+        </button>
 
     </div>
 
@@ -1281,16 +1967,16 @@ footer {
         </div>
 
         <h3>
-            No Products Available
+            Your catalog is empty
         </h3>
 
         <p>
-            Start building your medical product catalog
-            by adding your first product.
+            Add your first medical product
+            to get started.
         </p>
 
         <button
-            class="add-main-btn"
+            class="hero-button"
             style="margin-top:18px;"
             onclick="openModal()">
 
@@ -1303,20 +1989,23 @@ footer {
 <% } else { %>
 
 
-    <div class="product-container" id="productContainer">
+    <div
+        class="product-grid"
+        id="productGrid">
+
 
     <% for (Map<String, String> product : products) { %>
 
-        <div class="product-card"
-             data-name="<%= product.get("name") %>">
+        <div
+            class="product-card"
+            data-name="<%= product.get("name") %>">
 
 
-            <div class="product-image-area">
+            <div class="product-image">
 
                 <img
                     src="<%= product.get("imageUrl") %>"
                     alt="<%= product.get("name") %>"
-                    class="product-image"
                 >
 
 
@@ -1325,14 +2014,10 @@ footer {
                 </div>
 
 
-                <div class="product-actions">
+                <div class="card-menu">
 
-                    <button
-                        class="action-btn"
-                        title="More options">
-
+                    <button>
                         ⋮
-
                     </button>
 
                 </div>
@@ -1340,9 +2025,9 @@ footer {
             </div>
 
 
-            <div class="product-details">
+            <div class="product-info">
 
-                <div class="product-title">
+                <div class="product-name">
 
                     <%= product.get("name") %>
 
@@ -1356,13 +2041,13 @@ footer {
                 </div>
 
 
-                <div class="product-bottom">
+                <div class="product-footer">
 
                     <span class="verified">
-                        ✓ Verified Product
+                        ✓ VERIFIED
                     </span>
 
-                    <button class="details-btn">
+                    <button class="view-btn">
                         View
                     </button>
 
@@ -1378,13 +2063,14 @@ footer {
 
 <% } %>
 
+
 </section>
 
 
 <footer>
 
-    © 2026 MedixCare Healthcare Solutions
-    · Secure Medical Product Management
+    © 2026 MedixCare Healthcare Platform
+    · Secure Product Management
 
 </footer>
 
@@ -1397,17 +2083,21 @@ footer {
 
 
 <!-- =====================================================
-     ADD PRODUCT MODAL
+     MODAL
 ===================================================== -->
 
-<div class="modal" id="productModal">
+<div
+    class="modal"
+    id="productModal">
+
 
     <div class="modal-box">
+
 
         <div class="modal-header">
 
             <h2>
-                Add New Product
+                Add Medical Product
             </h2>
 
             <button
@@ -1429,13 +2119,13 @@ footer {
             <div class="form-group">
 
                 <label>
-                    Product Name
+                    PRODUCT NAME
                 </label>
 
                 <input
                     type="text"
                     name="name"
-                    placeholder="Enter product name"
+                    placeholder="e.g. Digital Blood Pressure Monitor"
                     required
                 >
 
@@ -1445,7 +2135,7 @@ footer {
             <div class="form-group">
 
                 <label>
-                    Image URL
+                    PRODUCT IMAGE URL
                 </label>
 
                 <input
@@ -1461,12 +2151,12 @@ footer {
             <div class="form-group">
 
                 <label>
-                    Product Description
+                    DESCRIPTION
                 </label>
 
                 <textarea
                     name="description"
-                    placeholder="Describe the medical product..."
+                    placeholder="Enter product description..."
                     required
                 ></textarea>
 
@@ -1475,9 +2165,9 @@ footer {
 
             <button
                 type="submit"
-                class="modal-submit">
+                class="submit">
 
-                Add Product
+                Add Product to Catalog
 
             </button>
 
@@ -1490,9 +2180,9 @@ footer {
 
 <script>
 
-/* =====================================================
+/* =========================================================
    MODAL
-===================================================== */
+========================================================= */
 
 function openModal() {
 
@@ -1509,55 +2199,114 @@ function closeModal() {
 }
 
 
-/* Close when clicking outside */
+/* Close outside modal */
 
-window.onclick = function(event) {
+window.addEventListener(
+    "click",
+    function(event) {
 
-    const modal =
-        document.getElementById("productModal");
+        const modal =
+            document.getElementById(
+                "productModal"
+            );
 
-    if (event.target === modal) {
-        closeModal();
+        if (event.target === modal) {
+
+            closeModal();
+
+        }
+
     }
+);
 
-};
 
-
-/* =====================================================
-   SEARCH
-===================================================== */
+/* =========================================================
+   PRODUCT SEARCH
+========================================================= */
 
 function searchProducts() {
 
     const input =
-        document.getElementById("searchInput");
+        document.getElementById(
+            "searchInput"
+        );
 
-    const search =
-        input.value.toLowerCase();
+    const value =
+        input.value
+            .toLowerCase()
+            .trim();
 
     const cards =
-        document.querySelectorAll(".product-card");
-
+        document.querySelectorAll(
+            ".product-card"
+        );
 
     cards.forEach(function(card) {
 
         const name =
-            card.getAttribute("data-name")
+            card
+                .getAttribute("data-name")
                 .toLowerCase();
 
-        if (name.includes(search)) {
-
-            card.style.display = "";
-
-        } else {
-
-            card.style.display = "none";
-
-        }
+        card.style.display =
+            name.includes(value)
+                ? ""
+                : "none";
 
     });
 
 }
+
+
+/* =========================================================
+   HEADER SEARCH
+========================================================= */
+
+function headerSearch(input) {
+
+    const value =
+        input.value
+            .toLowerCase()
+            .trim();
+
+    const cards =
+        document.querySelectorAll(
+            ".product-card"
+        );
+
+    cards.forEach(function(card) {
+
+        const name =
+            card
+                .getAttribute("data-name")
+                .toLowerCase();
+
+        card.style.display =
+            name.includes(value)
+                ? ""
+                : "none";
+
+    });
+
+}
+
+
+/* =========================================================
+   ESC KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeModal();
+
+        }
+
+    }
+);
 
 </script>
 
